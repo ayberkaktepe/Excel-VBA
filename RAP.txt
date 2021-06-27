@@ -1,0 +1,138 @@
+Sub RAP()
+'
+' RAP Macro
+'
+
+'
+
+
+'baslangic data adedini kaydet
+ Range("AW1").Select
+    Selection.Copy
+    Range("AV1").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+
+
+'open richard rap file
+Workbooks.Open "C:\Users\Ayberk.Aktepe\Desktop\NL CCX_PRR_RAP Report - 14 days rolling.xlsx"
+
+
+
+' rap sheetine data ekleme baslangic
+ Windows("NL CCX_PRR_RAP Report - 14 days rolling.xlsx").Activate
+    Range("A2:AI2").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Copy
+    
+    
+    Windows("Amazon NL DATA.xlsx").Activate
+    Range("A100000").Select
+    ActiveSheet.Paste
+
+    Columns("A:AQ").Select
+    Range("AQ1").Activate
+    Application.CutCopyMode = False
+    ActiveWorkbook.Worksheets("RAP").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("RAP").Sort.SortFields.Add Key:=Range("J2:J105000") _
+        , SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("RAP").Sort
+        .SetRange Range("A1:AQ105000")
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    
+    
+    ActiveWorkbook.Worksheets("RAP").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("RAP").Sort.SortFields.Add Key:=Range("X2:X105000") _
+        , SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("RAP").Sort
+        .SetRange Range("A1:AQ105000")
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    
+    
+    
+    ActiveSheet.Range("$A$1:$AQ$105000").RemoveDuplicates Columns:=6, Header:= _
+        xlYes
+    ActiveWorkbook.Worksheets("RAP").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("RAP").Sort.SortFields.Add Key:=Range("J2:J105000") _
+        , SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("RAP").Sort
+        .SetRange Range("A1:AQ105000")
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    
+        Range("AL2:AQ2").Select
+    Selection.AutoFill Destination:=Range("AL2:AQ105000")
+'rap sheetine data ekleme bitis
+
+
+'close richard rap file
+Workbooks("NL CCX_PRR_RAP Report - 14 days rolling.xlsx").Close SaveChanges:=False
+
+
+
+
+'eski datayi sildik
+Sheets("RAW DATA").Range("A2:AQ500000").Clear
+
+'rap sheetinden datayi kopyalayis yapistirdik
+Sheets("RAP").Range("A2:AQ105000").Copy
+Sheets("RAW DATA").Range("A2:AQ105000").PasteSpecial Paste:=xlPasteValues
+
+'aht sheetinden datayi kopyalayip yapistirdik
+Sheets("AHT").Range("A2:AQ100002").Copy
+Sheets("RAW DATA").Range("A105001:AQ205001").PasteSpecial Paste:=xlPasteValues
+
+'tarihe göre siraladik
+    Columns("A:AQ").Select
+    ActiveWorkbook.Worksheets("RAW DATA").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("RAW DATA").Sort.SortFields.Add Key:=Range( _
+        "J2:J205001"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
+        xlSortNormal
+    With ActiveWorkbook.Worksheets("RAW DATA").Sort
+        .SetRange Range("A1:AQ205001")
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    
+    'rap aht ayrimi icin siraladik
+    ActiveWorkbook.Worksheets("RAW DATA").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("RAW DATA").Sort.SortFields.Add Key:=Range( _
+        "A2:A205001"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
+        xlSortNormal
+    With ActiveWorkbook.Worksheets("RAW DATA").Sort
+        .SetRange Range("A1:AQ205001")
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+
+'temiz bir goruntu icin hucre sectik
+ Worksheets("RAP").Select
+    Worksheets("RAP").Range("A1").Select
+
+
+MsgBox "Data basarili bir sekilde eklendi. Baslangic data adedi: " & Range("AV1").Value & " Güncel data adedi: " & Range("AW1").Value & vbNewLine & "Eklenen data adedi: " & Range("AW1").Value - Range("Av1").Value
+
+
+   
+End Sub
