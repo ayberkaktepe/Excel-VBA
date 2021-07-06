@@ -15,12 +15,43 @@ Sub RAP()
 
 
 
-'open richard rap file
+'Open richard rap file
 Workbooks.Open "C:\Users\Ayberk.Aktepe\Desktop\NL CCX_PRR_RAP Report - 14 days rolling.xlsx"
 
 
 
 ' rap sheetine data ekleme baslangic
+
+
+        'data eklemeden önce çakisan tarihleri sildik
+Windows("Amazon NL DATA.xlsx").Activate
+'Range("AW2:BC2").Select
+    'Selection.Copy
+    Range("AL2:AR2").Select
+    'ActiveSheet.Paste
+    'Application.CutCopyMode = False
+    Selection.AutoFill Destination:=Range("AL2:AR105000")
+    Range("AL2:AR105000").Select
+    Columns("AR:AR").Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Columns("AR:AR").Select
+    Selection.Replace What:="TRUE", Replacement:="", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False
+    Columns("AR:AR").Select
+    Application.CutCopyMode = False
+    Columns("AR:AR").Select
+    Selection.SpecialCells(xlCellTypeBlanks).Select
+    Selection.EntireRow.Delete
+        'Çakisan tarihleri silme bitis
+        
+    
+    
+    
+    
+
  Windows("NL CCX_PRR_RAP Report - 14 days rolling.xlsx").Activate
     Range("A2:AI2").Select
     Range(Selection, Selection.End(xlDown)).Select
@@ -60,23 +91,18 @@ Workbooks.Open "C:\Users\Ayberk.Aktepe\Desktop\NL CCX_PRR_RAP Report - 14 days r
     End With
     
     
+    'bozukWindows("Amazon NL DATA.xlsx").Activate
+    'bozukRange("AL2:AR2").Select
+    'bozukSelection.Copy
+    'bozukRange("AL2:AR105000").Paste
     
-    ActiveSheet.Range("$A$1:$AQ$105000").RemoveDuplicates Columns:=6, Header:= _
-        xlYes
-    ActiveWorkbook.Worksheets("RAP").Sort.SortFields.Clear
-    ActiveWorkbook.Worksheets("RAP").Sort.SortFields.Add Key:=Range("J2:J105000") _
-        , SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortNormal
-    With ActiveWorkbook.Worksheets("RAP").Sort
-        .SetRange Range("A1:AQ105000")
-        .Header = xlYes
-        .MatchCase = False
-        .Orientation = xlTopToBottom
-        .SortMethod = xlPinYin
-        .Apply
-    End With
     
-        Range("AL2:AQ2").Select
-    Selection.AutoFill Destination:=Range("AL2:AQ105000")
+
+    Range("AL2:AR2").Select
+    Selection.AutoFill Destination:=Range("AL2:AR105000")
+    
+    
+
 'rap sheetine data ekleme bitis
 
 
@@ -89,7 +115,7 @@ Workbooks("NL CCX_PRR_RAP Report - 14 days rolling.xlsx").Close SaveChanges:=Fal
 'eski datayi sildik
 Sheets("RAW DATA").Range("A2:AQ500000").Clear
 
-'rap sheetinden datayi kopyalayis yapistirdik
+'rap sheetinden datayi kopyalayip yapistirdik
 Sheets("RAP").Range("A2:AQ105000").Copy
 Sheets("RAW DATA").Range("A2:AQ105000").PasteSpecial Paste:=xlPasteValues
 
@@ -127,12 +153,72 @@ Sheets("RAW DATA").Range("A105001:AQ205001").PasteSpecial Paste:=xlPasteValues
     End With
 
 'temiz bir goruntu icin hucre sectik
- Worksheets("RAP").Select
-    Worksheets("RAP").Range("A1").Select
+ 'Worksheets("RAP").Select
+   ' Worksheets("RAP").Range("A1").Select
 
 
-MsgBox "Data basarili bir sekilde eklendi. Baslangic data adedi: " & Range("AV1").Value & " Güncel data adedi: " & Range("AW1").Value & vbNewLine & "Eklenen data adedi: " & Range("AW1").Value - Range("Av1").Value
+Windows("Amazon NL DATA.xlsx").Activate
+MsgBox "Data basarili bir sekilde eklendi. Baslangic data adedi: " & ActiveWorkbook.Worksheets("RAP").Range("AV1").Value & " Güncel data adedi: " & ActiveWorkbook.Worksheets("RAP").Range("AW1").Value & vbNewLine & "Eklenen data adedi: " & ActiveWorkbook.Worksheets("RAP").Range("AW1").Value - ActiveWorkbook.Worksheets("RAP").Range("Av1").Value & " Raporu güncellemek için OK'e basin"
 
 
+
+
+'Refresh all
+Workbooks.Open "C:\Users\Ayberk.Aktepe\Desktop\Amazon Dutch.xlsx"
+Workbooks("Amazon Dutch.xlsx").RefreshAll
+
+
+
+
+
+'CLEAR BASLANGIC
+
+Windows("Amazon Dutch.xlsx").Activate
+
+    ActiveWindow.SmallScroll Down:=-33
+    Columns("BI:BI").Select
+    With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    Sheets("RAP Email").Select
+    ActiveWindow.SmallScroll Down:=-27
+    Columns("BI:BI").Select
+    With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    Sheets("RAP Message Us").Select
+    ActiveWindow.SmallScroll Down:=-24
+    Columns("BI:BI").Select
+    With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    Sheets("New Hire").Select
+    Range("X5").Select
+    Sheets("Dashboard").Select
+    Range("AJ1").Select
+    Sheets("Weekly RAP-AHT").Select
+    Range("DR2").Select
+    Sheets("PRR Message Us").Select
+    Range("F1").Select
+    Sheets("PRR Email").Select
+    Range("F1").Select
+    Sheets("PRR Phone").Select
+    Range("F1").Select
+    Sheets("RAP Message Us").Select
+    Range("F1").Select
+    Sheets("RAP Email").Select
+    Range("F1").Select
+    Sheets("RAP Phone").Select
+    Range("F1").Select
+    ActiveWindow.SmallScroll Down:=-24
+    
+    
+    'CLEAR BITIS
    
 End Sub
