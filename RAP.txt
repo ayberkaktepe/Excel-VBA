@@ -25,11 +25,11 @@ Workbooks.Open "C:\Users\Ayberk.Aktepe\Desktop\NL CCX_PRR_RAP Report - 14 days r
 
         'data eklemeden önce çakisan tarihleri sildik
 Windows("Amazon NL DATA.xlsx").Activate
-'Range("AW2:BC2").Select
-    'Selection.Copy
+Range("AW2:BC2").Select
+    Selection.Copy
     Range("AL2:AR2").Select
-    'ActiveSheet.Paste
-    'Application.CutCopyMode = False
+    ActiveSheet.Paste
+    Application.CutCopyMode = False
     Selection.AutoFill Destination:=Range("AL2:AR105000")
     Range("AL2:AR105000").Select
     Columns("AR:AR").Select
