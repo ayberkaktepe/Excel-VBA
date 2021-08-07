@@ -220,5 +220,18 @@ Windows("Amazon Dutch.xlsx").Activate
     
     
     'CLEAR BITIS
+    
+    
+    
+    'kaydet ve çik
+    
+    Windows("Amazon Dutch.xlsx").Activate
+    ActiveWorkbook.Close SaveChanges:=True
+
+
+    Windows("Amazon NL DATA.xlsx").Activate
+    ActiveWorkbook.Close SaveChanges:=True
+    
+    'Kaydet ve cik bitis
    
 End Sub
